@@ -1,71 +1,107 @@
 package com.example.scanbill.component;
 
-import com.example.scanbill.model.InventoryItem;
-import com.example.scanbill.model.Product;
-import com.example.scanbill.repository.InventoryItemRepository;
-import com.example.scanbill.repository.ProductRepository;
+import com.example.scanbill.model.*;
+import com.example.scanbill.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class DataSeeder implements CommandLineRunner {
         private final ProductRepository productRepository;
         private final InventoryItemRepository inventoryItemRepository;
-
-        public DataSeeder(ProductRepository productRepository, InventoryItemRepository inventoryItemRepository) {
-                this.productRepository = productRepository;
-                this.inventoryItemRepository = inventoryItemRepository;
-        }
+        private final StoreRepository storeRepository;
+        private final UserRepository userRepository;
+        private final CartRepository cartRepository;
+        private final OrderRepository orderRepository;
 
         @Override
         public void run(String... args) throws Exception {
-                System.out.println("Starting Massive DataSeeder...");
-                try {
-                        productRepository.deleteAll();
-                        inventoryItemRepository.deleteAll();
+                // Wipe all existing data for a clean multi-store demo environment
+                System.out.println("Wiping existing data for fresh multi-store ecosystem...");
+                productRepository.deleteAll();
+                inventoryItemRepository.deleteAll();
+                storeRepository.deleteAll();
+                userRepository.deleteAll();
+                cartRepository.deleteAll();
+                orderRepository.deleteAll();
 
-                        List<Product> products = Arrays.asList(
-                                        new Product(null, "101", "Java Programming Guide", 45.00, "Books",
-                                                        "https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=400"),
-                                        new Product(null, "102", "Python for Data Science", 55.00, "Books",
-                                                        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400"),
-                                        new Product(null, "103", "Cotton Slim Fit T-Shirt", 25.00, "Apparel",
-                                                        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400"),
-                                        new Product(null, "104", "Premium Leather Wallet", 35.00, "Accessories",
-                                                        "https://images.unsplash.com/photo-1627123424574-724758594e93?w=400"),
-                                        new Product(null, "105", "Noise Cancelling Headphones", 120.00, "Electronics",
-                                                        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400"),
-                                        new Product(null, "106", "Smart LED Desk Lamp", 40.00, "Home",
-                                                        "https://images.unsplash.com/photo-1534073828943-f801091bb18c?w=400"),
-                                        new Product(null, "107", "Stainless Steel Water Bottle", 15.00, "Accessories",
-                                                        "https://images.unsplash.com/photo-1602143399827-bd9aa9673b56?w=400"),
-                                        new Product(null, "108", "Mechanical Keyboard", 85.00, "Electronics",
-                                                        "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=400"),
-                                        new Product(null, "109", "Matte Black Fountain Pen", 12.00, "Stationery",
-                                                        "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400"),
-                                        new Product(null, "110", "Dotted Journal (A5)", 8.00, "Stationery",
-                                                        "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=400"));
+                System.out.println("Provisioning Multi-Store Ecosystem...");
 
+                // 1. Super Admin
+                userRepository.save(new User(null, "super", "super123", Role.SUPER_ADMIN, null));
+
+                // 2. Stores & Admins
+                String[][] storeConfigs = {
+                                { "Alpha Digital", "Metropolis Hub", "admin1", "pass123" },
+                                { "Beta Boutique", "Neo Tokyo", "admin2", "pass123" },
+                                { "Gamma Grocery", "Cyber City", "admin3", "pass123" }
+                };
+
+                for (int s = 0; s < storeConfigs.length; s++) {
+                        String[] config = storeConfigs[s];
+                        Store store = storeRepository.save(new Store(null, config[0], config[1]));
+                        userRepository.save(new User(null, config[2], config[3], Role.ADMIN, store.getId()));
+
+                        // 3. 25 Products per store
+                        String prefix = (s == 0 ? "A" : (s == 1 ? "B" : "G"));
+                        List<Product> products = new ArrayList<>();
+                        for (int i = 1; i <= 25; i++) {
+                                String category = getCategory(i);
+                                String barcode = prefix + String.format("%03d", i);
+                                products.add(new Product(null, barcode, config[0] + " Premium Item " + i,
+                                                20.0 + (i * 10), category, getImageUrl(category), 10.0 + (i * 5),
+                                                store.getId()));
+                        }
                         productRepository.saveAll(products);
 
-                        List<InventoryItem> inventoryItems = new ArrayList<>();
+                        // 4. 10 Units (Stock) per product
+                        List<InventoryItem> items = new ArrayList<>();
                         for (Product p : products) {
-                                // Generate 6 unique units for each product (Total 60 items)
-                                for (int i = 1; i <= 6; i++) {
-                                        String serial = p.getBarcode() + "-" + String.format("%03d", i);
-                                        inventoryItems.add(
-                                                        new InventoryItem(null, p.getBarcode(), serial, "AVAILABLE"));
+                                for (int u = 1; u <= 10; u++) {
+                                        String serial = p.getBarcode() + "-" + String.format("%03d", u);
+                                        items.add(new InventoryItem(null, p.getBarcode(), serial, "AVAILABLE",
+                                                        store.getId()));
                                 }
                         }
+                        inventoryItemRepository.saveAll(items);
+                }
 
-                        inventoryItemRepository.saveAll(inventoryItems);
-                        System.out.println("Seeded 10 products and 60 unique inventory items.");
-                } catch (Exception e) {
-                        System.err.println("Error during seeding: " + e.getMessage());
+                System.out.println("Ecosystem Provisioning Complete!");
+                System.out.println("Super Admin: super / super123");
+                System.out.println("Store 1: Alpha Digital (admin1 / pass123)");
+                System.out.println("Store 2: Beta Boutique (admin2 / pass123)");
+                System.out.println("Store 3: Gamma Grocery (admin3 / pass123)");
+        }
+
+        private String getCategory(int i) {
+                if (i <= 5)
+                        return "Electronics";
+                if (i <= 10)
+                        return "Apparel";
+                if (i <= 15)
+                        return "Home";
+                if (i <= 20)
+                        return "Stationery";
+                return "Accessories";
+        }
+
+        private String getImageUrl(String cat) {
+                switch (cat) {
+                        case "Electronics":
+                                return "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400";
+                        case "Apparel":
+                                return "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400";
+                        case "Home":
+                                return "https://images.unsplash.com/photo-1534073828943-f801091bb18c?w=400";
+                        case "Stationery":
+                                return "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400";
+                        default:
+                                return "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400";
                 }
         }
 }

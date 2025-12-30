@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,17 +20,18 @@ public class CartService {
     private final ProductRepository productRepository;
     private final InventoryItemRepository inventoryItemRepository;
 
-    public Cart getCartByUserId(String userId) {
+    public Cart getCartByUserId(String userId, String storeId) {
         return cartRepository.findByUserId(userId).orElseGet(() -> {
             Cart newCart = new Cart();
             newCart.setUserId(userId);
+            newCart.setStoreId(storeId);
             newCart.setItems(new ArrayList<>());
             return cartRepository.save(newCart);
         });
     }
 
-    public Cart addToCart(String userId, String serialNumber) {
-        Cart cart = getCartByUserId(userId);
+    public Cart addToCart(String userId, String serialNumber, String storeId) {
+        Cart cart = getCartByUserId(userId, storeId);
 
         // Check if item already in cart
         if (cart.getItems().stream().anyMatch(item -> item.getSerialNumber().equals(serialNumber))) {
@@ -55,8 +55,8 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    public Cart removeFromCart(String userId, String serialNumber) {
-        Cart cart = getCartByUserId(userId);
+    public Cart removeFromCart(String userId, String serialNumber, String storeId) {
+        Cart cart = getCartByUserId(userId, storeId);
         cart.getItems().removeIf(item -> item.getSerialNumber().equals(serialNumber));
         calculateTotal(cart);
         return cartRepository.save(cart);
@@ -69,7 +69,7 @@ public class CartService {
         cart.setTotalAmount(total);
     }
 
-    public List<InventoryItem> getAvailableUnits(String barcode) {
-        return inventoryItemRepository.findByBarcodeAndStatus(barcode, "AVAILABLE");
+    public List<InventoryItem> getAvailableUnits(String barcode, String storeId) {
+        return inventoryItemRepository.findByBarcodeAndStatusAndStoreId(barcode, "AVAILABLE", storeId);
     }
 }

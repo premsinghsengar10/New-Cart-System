@@ -18,4 +18,6 @@ public class Product {
     private double price;
     private String category;
     private String imageUrl;
+    private double basePrice;
+    private String storeId;
 }

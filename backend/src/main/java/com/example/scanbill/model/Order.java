@@ -23,4 +23,5 @@ public class Order {
     private LocalDateTime timestamp;
     private String customerName;
     private String customerMobile;
+    private String storeId;
 }

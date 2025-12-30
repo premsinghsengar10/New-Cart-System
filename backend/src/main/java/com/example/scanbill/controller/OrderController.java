@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin(origins = "*")
 public class OrderController {
     private final OrderRepository orderRepository;
     private final CartRepository cartRepository;
@@ -29,13 +28,13 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public List<Order> getAllOrders(@RequestParam String storeId) {
+        return orderRepository.findByStoreId(storeId);
     }
 
     @PostMapping("/checkout/{userId}")
     public Order checkout(@PathVariable String userId, @RequestParam String customerName,
-            @RequestParam String customerMobile) {
+            @RequestParam String customerMobile, @RequestParam String storeId) {
         Cart cart = cartRepository.findByUserId(userId).orElseThrow();
 
         if (cart.getItems().isEmpty()) {
@@ -63,6 +62,7 @@ public class OrderController {
         order.setTimestamp(LocalDateTime.now());
         order.setCustomerName(customerName);
         order.setCustomerMobile(customerMobile);
+        order.setStoreId(storeId);
 
         Order savedOrder = orderRepository.save(order);
 

@@ -9,12 +9,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "inventory_items")
-public class InventoryItem {
+@Document(collection = "users")
+public class User {
     @Id
     private String id;
-    private String barcode;
-    private String serialNumber;
-    private String status; // AVAILABLE, SOLD
-    private String storeId;
+    private String username;
+    private String password;
+    private Role role;
+    private String storeId; // Null for SUPER_ADMIN
 }
