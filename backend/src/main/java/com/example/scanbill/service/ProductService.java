@@ -13,6 +13,8 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
 
+    private final com.example.scanbill.repository.InventoryItemRepository inventoryItemRepository;
+
     public Optional<Product> getProductByBarcode(String barcode) {
         return productRepository.findByBarcode(barcode);
     }
@@ -21,7 +23,22 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product addProduct(Product product) {
-        return productRepository.save(product);
+    public List<Product> getProductsByStoreId(String storeId) {
+        return productRepository.findByStoreId(storeId);
+    }
+
+    public Product addProductWithStock(Product product, int initialStock) {
+        Product savedProduct = productRepository.save(product);
+
+        // Generate initial inventory items (units)
+        List<com.example.scanbill.model.InventoryItem> items = new java.util.ArrayList<>();
+        for (int i = 1; i <= initialStock; i++) {
+            String serial = savedProduct.getBarcode() + "-" + String.format("%03d", i);
+            items.add(new com.example.scanbill.model.InventoryItem(null, savedProduct.getBarcode(), serial, "AVAILABLE",
+                    savedProduct.getStoreId()));
+        }
+        inventoryItemRepository.saveAll(items);
+
+        return savedProduct;
     }
 }

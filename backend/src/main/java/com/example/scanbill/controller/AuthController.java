@@ -4,15 +4,17 @@ import com.example.scanbill.model.Store;
 import com.example.scanbill.model.User;
 import com.example.scanbill.service.AuthService;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
@@ -45,6 +47,15 @@ public class AuthController {
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Auth Service is Reachable");
+    }
+
+    @GetMapping("/stores")
+    public ResponseEntity<?> getAllStores() {
+        try {
+            return ResponseEntity.ok(authService.getAllStores());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/bootstrap-super-admin")

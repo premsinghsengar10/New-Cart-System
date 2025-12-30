@@ -5,14 +5,17 @@ import com.example.scanbill.model.Store;
 import com.example.scanbill.model.User;
 import com.example.scanbill.repository.StoreRepository;
 import com.example.scanbill.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
+
+    public AuthService(UserRepository userRepository, StoreRepository storeRepository) {
+        this.userRepository = userRepository;
+        this.storeRepository = storeRepository;
+    }
 
     public Store registerStore(String storeName, String location, String adminUsername, String adminPassword) {
         // 0. Database Readiness Check
@@ -60,5 +63,9 @@ public class AuthService {
         superAdmin.setPassword(password);
         superAdmin.setRole(Role.SUPER_ADMIN);
         return userRepository.save(superAdmin);
+    }
+
+    public java.util.List<Store> getAllStores() {
+        return storeRepository.findAll();
     }
 }
