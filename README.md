@@ -1,68 +1,56 @@
-# Scan & Bill: Smart Self-Checkout System
+# Scan & Bill: Enterprise Multi-Store Ecosystem
 
-Scan & Bill is a modern, web-based self-checkout application designed to streamline the shopping experience. It features unique item tracking, an intuitive monochrome interface, and real-time inventory management.
+Scan & Bill is a robust, modular self-checkout ecosystem designed for multi-store coordination and enterprise-grade stability. It features individual unit tracking (Serial Numbers), a high-concurrency safe backend, and a cleanly modularized React architecture.
 
-## 🚀 Features
+## 🚀 Key Features
 
-- **Monochrome Aesthetic**: A clean, high-contrast black and white UI for a professional, minimalist look.
-- **Unique Item Tracking (Serial Numbers)**: Every physical unit is tracked individually. Selling one unit marks only that specific item as SOLD while the rest of the stock remains available.
-- **Product Discovery**: 
-  - **Search Bar**: Quickly find products by name or category.
-  - **Grid View**: A responsive, 2-column grid for easy browsing.
-- **Real-time Feedback**: Instant notifications (Toasts) when adding or removing items from the basket.
-- **Transaction History**: An activity dashboard to view past orders, including customer details (Name, Mobile) and itemized lists.
-- **Mass Inventory**: Pre-seeded with 60+ unique units across 10 diverse product categories.
+- **Multi-Store RBAC Management**:
+  - **Super Admin**: Full ecosystem dashboard to monitor all stores and provision new ones.
+  - **Store Admin**: Dedicated control over unique inventory, staff, and store-specific products.
+  - **User/Cashier**: Intuitive scanning and billing interface for rapid customer processing.
+- **High-Stability Operations (Idempotency)**:
+  - **Collusion-Free Backend**: Implemented **Optimistic Locking** and **Idempotency Keys** to prevent request collisions and duplicate orders during concurrent usage.
+  - **Atomic Inventory**: Every physical unit is tracked by a unique serial number, ensuring absolute stock accuracy.
+- **Modular Frontend Architecture**: Refactored into a scalable component-based structure (`/components` and `/pages`) for easy extending and lightning-fast maintenance.
+- **Premium Monochrome UI**: High-contrast design system with glassmorphism effects and fluid Framer Motion transitions.
 
-## 🛠️ Tech Stack
+## 🛠️ Performance Tech Stack
 
-### Backend
+### Backend (Java Spring Boot)
 - **Framework**: Spring Boot 3.2
-- **Database**: MongoDB (Spring Data MongoDB)
-- **Architecture**: RESTful API
-- **Language**: Java 17
+- **Database**: MongoDB (Scalable NoSQL)
+- **Concurrency**: Versioned Optimistic Locking (Preventing data loss)
+- **Logic Layer**: Robust Service-based architecture with idempotency verification.
 
-### Frontend
-- **Framework**: React.js (Vite)
-- **Styling**: Vanilla CSS (Monochrome Design System)
-- **Icons**: Lucide React
-- **Animations**: Framer Motion
-- **API Client**: Axios
+### Frontend (React + Vite)
+- **Design Architecture**: Modular Page & View pattern.
+- **State Management**: Session-persistent authentication and global cart buffering.
+- **Visuals**: Vanilla CSS Design Tokens + Framer Motion.
 
 ## 📦 Getting Started
 
 ### Prerequisites
 - Java 17+
 - Node.js 18+
-- MongoDB running on `localhost:27017`
+- MongoDB running on `127.0.0.1:27017`
 
 ### Backend Setup
-1. Navigate to the `backend/` directory.
-2. Run the application:
+1. Navigate to `backend/`.
+2. Recompile and start:
    ```bash
+   mvn clean compile
    mvn spring-boot:run
    ```
-   *The database will auto-seed with 60+ items on first run.*
+   *The system will auto-seed with a default Super Admin (`super` / `super123`) and 3 demonstration store environments.*
 
 ### Frontend Setup
-1. Navigate to the `frontend/` directory.
-2. Install dependencies:
+1. Navigate to `frontend/`.
+2. Initialize:
    ```bash
-   npm install
+   npm install && npm run dev
    ```
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-4. Open the application at `http://localhost:5173`.
-
-## 📖 How to Use
-
-1. **Browse**: Open the **Scan** tab. Use the search bar or grid to find a product.
-2. **Select Unit**: Click a product to see available unique **Serial Numbers**. Pick one to add to your basket.
-3. **Review**: Check the **Cart** tab to see your selections. You can remove specific units here.
-4. **Pay**: Go to the **Pay** tab, enter your details (Name & Mobile), and finalize the purchase.
-5. **View History**: Check the **Activity** tab to see your transaction confirmed in the history log.
+3. Open `http://localhost:5173`.
 
 ---
 
-Built with ❤️ by **Prem Singh Sengar** and **Antigravity**
+Built with ⚡ by **Prem Singh Sengar** & **Antigravity**

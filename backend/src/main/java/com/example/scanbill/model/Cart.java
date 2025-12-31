@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -20,4 +21,7 @@ public class Cart {
     private List<CartItem> items = new ArrayList<>();
     private double totalAmount;
     private String storeId;
+
+    @Version
+    private Long version;
 }

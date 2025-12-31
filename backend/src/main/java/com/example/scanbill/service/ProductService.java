@@ -35,7 +35,7 @@ public class ProductService {
         for (int i = 1; i <= initialStock; i++) {
             String serial = savedProduct.getBarcode() + "-" + String.format("%03d", i);
             items.add(new com.example.scanbill.model.InventoryItem(null, savedProduct.getBarcode(), serial, "AVAILABLE",
-                    savedProduct.getStoreId()));
+                    savedProduct.getStoreId(), null));
         }
         inventoryItemRepository.saveAll(items);
 

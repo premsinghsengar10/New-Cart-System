@@ -33,7 +33,7 @@ public class DataSeeder implements CommandLineRunner {
                 System.out.println("Provisioning Multi-Store Ecosystem...");
 
                 // 1. Super Admin
-                userRepository.save(new User(null, "super", "super123", Role.SUPER_ADMIN, null));
+                userRepository.save(new User(null, "super", "super123", Role.SUPER_ADMIN, null, null));
 
                 // 2. Stores & Admins
                 String[][] storeConfigs = {
@@ -44,8 +44,8 @@ public class DataSeeder implements CommandLineRunner {
 
                 for (int s = 0; s < storeConfigs.length; s++) {
                         String[] config = storeConfigs[s];
-                        Store store = storeRepository.save(new Store(null, config[0], config[1]));
-                        userRepository.save(new User(null, config[2], config[3], Role.ADMIN, store.getId()));
+                        Store store = storeRepository.save(new Store(null, config[0], config[1], null));
+                        userRepository.save(new User(null, config[2], config[3], Role.ADMIN, store.getId(), null));
 
                         // 3. 25 Products per store
                         String prefix = (s == 0 ? "A" : (s == 1 ? "B" : "G"));
@@ -55,7 +55,7 @@ public class DataSeeder implements CommandLineRunner {
                                 String barcode = prefix + String.format("%03d", i);
                                 products.add(new Product(null, barcode, config[0] + " Premium Item " + i,
                                                 20.0 + (i * 10), category, getImageUrl(category), 10.0 + (i * 5),
-                                                store.getId()));
+                                                store.getId(), null));
                         }
                         productRepository.saveAll(products);
 
@@ -65,7 +65,7 @@ public class DataSeeder implements CommandLineRunner {
                                 for (int u = 1; u <= 10; u++) {
                                         String serial = p.getBarcode() + "-" + String.format("%03d", u);
                                         items.add(new InventoryItem(null, p.getBarcode(), serial, "AVAILABLE",
-                                                        store.getId()));
+                                                        store.getId(), null));
                                 }
                         }
                         inventoryItemRepository.saveAll(items);

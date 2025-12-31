@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface OrderRepository extends MongoRepository<Order, String> {
     List<Order> findByStoreId(String storeId);
+
+    java.util.Optional<Order> findByIdempotencyKey(String idempotencyKey);
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -24,4 +25,8 @@ public class Order {
     private String customerName;
     private String customerMobile;
     private String storeId;
+    private String idempotencyKey;
+
+    @Version
+    private Long version;
 }

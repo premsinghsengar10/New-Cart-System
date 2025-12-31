@@ -107,14 +107,15 @@ function App() {
 
     const handleCheckout = async () => {
         try {
-            await axios.post(`/api/orders/checkout/${user.id}?customerName=${checkoutDetails.name}&customerMobile=${checkoutDetails.mobile}&storeId=${user.storeId}`);
+            const idempotencyKey = crypto.randomUUID();
+            await axios.post(`/api/orders/checkout/${user.id}?customerName=${checkoutDetails.name}&customerMobile=${checkoutDetails.mobile}&storeId=${user.storeId}&idempotencyKey=${idempotencyKey}`);
             await fetchOrders();
             await fetchCart();
             addToast("Transaction Confirmed");
             setActiveTab('history');
             setCheckoutDetails({ name: '', mobile: '' });
         } catch (err) {
-            addToast("Failed to authorize", "error");
+            addToast(err.response?.data || "Failed to authorize", "error");
         }
     };
 
