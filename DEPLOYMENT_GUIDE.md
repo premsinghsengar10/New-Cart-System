@@ -23,14 +23,18 @@ Don't use the local MongoDB in the cloud. Use a managed service like [MongoDB At
 - Get your **Connection String**.
 
 ### 2. Backend (Render.com)
-- Create a new **Web Service**.
-- Connect your GitHub repository.
-- Set **Root Directory** to `backend/`.
-- Set **Environment Variables**:
-  - `MONGODB_URI`: *Paste your Atlas connection string here*
-  - `PORT`: `8081`
-- **Build Command**: `mvn clean package -DskipTests`
-- **Start Command**: `java -jar target/*.jar`
+There are two ways to do this:
+
+#### Method A: Blueprints (Automatic - Recommended)
+1. In Render, go to **Blueprints** -> **New Blueprint Instance**.
+2. Connect your repo. Render will read the `render.yaml` I created and configure everything for you!
+
+#### Method B: Manual Dashboard (Step-by-Step)
+1. Create a new **Web Service**.
+2. Connect your GitHub repository.
+3. Select **Docker** as the **Runtime** (Language).
+4. Render will automatically detect the `Dockerfile` inside the `backend/` folder.
+5. Go to the **Environment** tab on the left to add your `MONGODB_URI`.
 
 ### 3. Frontend (Vercel / Netlify)
 - Create a new project.
