@@ -21,6 +21,7 @@ Easy, managed, and free/cheap for small projects.
 Don't use the local MongoDB in the cloud. Use a managed service like [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 - Create a Cluster.
 - Get your **Connection String**.
+- **IMPORTANT**: Ensure your connection string ends with the database name (e.g., `...mongodb.net/scanbill?retryWrites...`). If it doesn't, add `/scanbill` before the `?`.
 
 ### 2. Backend (Render.com)
 There are two ways to do this:
