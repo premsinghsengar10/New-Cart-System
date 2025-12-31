@@ -20,6 +20,10 @@ Easy, managed, and free/cheap for small projects.
 ### 1. Database (MongoDB Atlas)
 Don't use the local MongoDB in the cloud. Use a managed service like [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 - Create a Cluster.
+- **CRITICAL: IP Access List**: Go to **Network Access** in Atlas. 
+  - Click **Add IP Address**.
+  - Select **"Allow Access From Anywhere"** (or add `0.0.0.0/0`).
+  - *Without this, Render will not be able to connect and you will see a Timeout error.*
 - Get your **Connection String**.
 - **IMPORTANT**: Ensure your connection string ends with the database name (e.g., `...mongodb.net/scanbill?retryWrites...`). If it doesn't, add `/scanbill` before the `?`.
 
@@ -40,9 +44,9 @@ There are two ways to do this:
 ### 3. Frontend (Vercel / Netlify)
 - Create a new project.
 - Connect your GitHub repository.
-- Set **Root Directory** to `frontend/`.
+- **Base Directory** (or Root Directory): `frontend/`
 - **Build Command**: `npm run build`
-- **Output Directory**: `dist`
+- **Publish Directory** (or Output Directory): `dist`
 - **Environment Variables**:
   - `VITE_API_BASE_URL`: *Paste your Render Backend URL here*
 

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
+// Configure Axios for Production/Development
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || '';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
