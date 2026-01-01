@@ -21,14 +21,11 @@ public class DataSeeder implements CommandLineRunner {
 
         @Override
         public void run(String... args) throws Exception {
-                // Wipe all existing data for a clean multi-store demo environment
-                System.out.println("Wiping existing data for fresh multi-store ecosystem...");
-                productRepository.deleteAll();
-                inventoryItemRepository.deleteAll();
-                storeRepository.deleteAll();
-                userRepository.deleteAll();
-                cartRepository.deleteAll();
-                orderRepository.deleteAll();
+                // Only seed if no stores exist (first run)
+                if (storeRepository.count() > 0) {
+                        System.out.println("Data already exists. Skipping seeding.");
+                        return;
+                }
 
                 System.out.println("Provisioning Multi-Store Ecosystem...");
 
@@ -59,10 +56,10 @@ public class DataSeeder implements CommandLineRunner {
                         }
                         productRepository.saveAll(products);
 
-                        // 4. 10 Units (Stock) per product
+                        // 4. 15 Units (Stock) per product
                         List<InventoryItem> items = new ArrayList<>();
                         for (Product p : products) {
-                                for (int u = 1; u <= 10; u++) {
+                                for (int u = 1; u <= 15; u++) {
                                         String serial = p.getBarcode() + "-" + String.format("%03d", u);
                                         items.add(new InventoryItem(null, p.getBarcode(), serial, "AVAILABLE",
                                                         store.getId(), null));

@@ -1,56 +1,73 @@
-# Scan & Bill: Enterprise Multi-Store Ecosystem
+# 🚀 Scan & Bill System
 
-Scan & Bill is a robust, modular self-checkout ecosystem designed for multi-store coordination and enterprise-grade stability. It features individual unit tracking (Serial Numbers), a high-concurrency safe backend, and a cleanly modularized React architecture.
+A modern, high-performance web application for retail store management, featuring a seamless "Scan & Checkout" experience for customers and a powerful ecosystem for administrators.
 
-## 🚀 Key Features
+![Status](https://img.shields.io/badge/Status-Active-success)
+![Stack](https://img.shields.io/badge/Stack-MERN%2BSpring-blue)
 
-- **Multi-Store RBAC Management**:
-  - **Super Admin**: Full ecosystem dashboard to monitor all stores and provision new ones.
-  - **Store Admin**: Dedicated control over unique inventory, staff, and store-specific products.
-  - **User/Cashier**: Intuitive scanning and billing interface for rapid customer processing.
-- **High-Stability Operations (Idempotency)**:
-  - **Collusion-Free Backend**: Implemented **Optimistic Locking** and **Idempotency Keys** to prevent request collisions and duplicate orders during concurrent usage.
-  - **Atomic Inventory**: Every physical unit is tracked by a unique serial number, ensuring absolute stock accuracy.
-- **Modular Frontend Architecture**: Refactored into a scalable component-based structure (`/components` and `/pages`) for easy extending and lightning-fast maintenance.
-- **Premium Monochrome UI**: High-contrast design system with glassmorphism effects and fluid Framer Motion transitions.
+## ✨ key Features
 
-## 🛠️ Performance Tech Stack
+### 🛍️ Customer Experience
+- **Instant Scan**: Add items to cart by scanning barcodes (or entering serial numbers).
+- **Fast Checkout**: Secure and idempotent checkout process.
+- **Order History**: View past transactions instantly.
 
-### Backend (Java Spring Boot)
-- **Framework**: Spring Boot 3.2
-- **Database**: MongoDB (Scalable NoSQL)
-- **Concurrency**: Versioned Optimistic Locking (Preventing data loss)
-- **Logic Layer**: Robust Service-based architecture with idempotency verification.
+### 🏢 Store Administration (Super Admin)
+- **Ecosystem Overview**: Manage multiple store nodes from a single dashboard.
+- **Node Provisioning**: fast on-boarding of new stores (`/signup`).
+- **Drill-Down Management**: "Inspect" any store to access its specific admin panel.
 
-### Frontend (React + Vite)
-- **Design Architecture**: Modular Page & View pattern.
-- **State Management**: Session-persistent authentication and global cart buffering.
-- **Visuals**: Vanilla CSS Design Tokens + Framer Motion.
+### 📦 Inventory & Operations (Admin)
+- **Product Catalog**: Add, Edit, and specialized pricing (Cost/Tax).
+- **Stock Control**: Generate and release inventory serials.
+- **Real-Time Analytics**: Monitor Revenue and Order volume live.
 
-## 📦 Getting Started
+## 🛠️ Technology Stack
+- **Frontend**: React (Vite), TailwindCSS, Framer Motion, Axios.
+- **Backend**: Spring Boot 3 (Java 17), Spring Data MongoDB.
+- **Database**: MongoDB (Atlas/Local).
+- **Security**: BCrypt hashing, Role-Based Access Control (RBAC).
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Java 17+
+- JDK 17+
 - Node.js 18+
-- MongoDB running on `127.0.0.1:27017`
+- MongoDB
 
-### Backend Setup
-1. Navigate to `backend/`.
-2. Recompile and start:
-   ```bash
-   mvn clean compile
-   mvn spring-boot:run
-   ```
-   *The system will auto-seed with a default Super Admin (`super` / `super123`) and 3 demonstration store environments.*
+### Installation
 
-### Frontend Setup
-1. Navigate to `frontend/`.
-2. Initialize:
+1. **Clone the repository**
    ```bash
-   npm install && npm run dev
+   git clone https://github.com/your-repo/scan-bill.git
    ```
-3. Open `http://localhost:5173`.
+
+2. **Backend Setup**
+   ```bash
+   cd backend
+   ./mvnw spring-boot:run
+   ```
+   *Server runs on port 8081.*
+
+3. **Frontend Setup**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+   *Client runs on http://localhost:5173.*
+
+## 📖 Usage Flow
+
+1. **Register**: Go to `/signup` to create a new store.
+2. **Login**: Use your admin credentials at `/login`.
+3. **Super Admin**: Browse the Ecosystem, click "Inspect" to manage a store.
+4. **Customer**: Customers at the store URL can scan items and checkout.
+
+## 🛡️ Security
+- **RBAC**: Strict separation between `USER`, `ADMIN`, and `SUPER_ADMIN`.
+- **Encryption**: Passwords hashed with BCrypt.
+- **Verification**: Admin actions require strict role validation.
 
 ---
-
-Built with ⚡ by **Prem Singh Sengar** & **Antigravity**
+*Built for speed, designed for scale.*

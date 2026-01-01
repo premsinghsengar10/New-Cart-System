@@ -146,8 +146,8 @@ function App() {
             </AnimatePresence>
 
             <Routes>
-                <Route path="/login" element={!user ? <LoginView onLogin={handleLogin} /> : <Navigate to={user.role === 'ADMIN' || user.role === 'SUPER_ADMIN' ? "/admin" : "/"} />} />
-                <Route path="/signup" element={!user ? <SignupView onSignup={() => addToast("Store Registered Successfully")} /> : <Navigate to="/" />} />
+                <Route path="/login" element={!user ? <LoginView onLogin={handleLogin} addToast={addToast} /> : <Navigate to={user.role === 'ADMIN' || user.role === 'SUPER_ADMIN' ? "/admin" : "/"} />} />
+                <Route path="/signup" element={!user ? <SignupView onSignup={() => addToast("Store Registered Successfully")} addToast={addToast} /> : <Navigate to="/" />} />
 
                 {/* Admin Route */}
                 <Route path="/admin" element={user && (user.role === 'ADMIN' || user.role === 'SUPER_ADMIN') ?
