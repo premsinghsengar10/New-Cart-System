@@ -8,8 +8,8 @@ console.log("------------------------------------------");
 console.log("🚀 SCAN & BILL - ENVIRONMENT DEBUG");
 console.log("------------------------------------------");
 console.log("Current Mode:", import.meta.env.MODE);
-console.log("API Base URL:", axios.defaults.baseURL);
-console.log("------------------------------------------");
+// console.log("API Base URL:", axios.defaults.baseURL);
+// console.log("------------------------------------------");
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
