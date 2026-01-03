@@ -20,12 +20,25 @@ public class Order {
     private String userId;
     private List<CartItem> items;
     private double totalAmount;
-    private String status; // PAID, PENDING
+    private double subtotal;
+    private double taxAmount;
+    private double discountAmount;
+    private String status; // PENDING, PAID, FAILED
     private LocalDateTime timestamp;
     private String customerName;
     private String customerMobile;
+    private String customerEmail;
     private String storeId;
     private String idempotencyKey;
+
+    // Payment fields
+    private String paymentId;
+    private String paymentMethod; // RAZORPAY, CASH, CARD
+    private String paymentStatus; // INITIATED, SUCCESS, FAILED
+
+    // Receipt fields
+    private String receiptUrl;
+    private String receiptQrCode;
 
     @Version
     private Long version;

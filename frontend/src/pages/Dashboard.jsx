@@ -221,8 +221,12 @@ const CatalogView = ({ storeId, onAdd, addToast }) => {
 };
 
 // Cart View
-const CartView = ({ cart, onRemove }) => (
+const CartView = ({ cart, onRemove, goBack }) => (
     <div className="max-w-2xl mx-auto space-y-6">
+        <button onClick={goBack} className="flex items-center gap-2 text-cred-muted hover:text-white transition-colors mb-4">
+            <ArrowLeft size={18} />
+            <span className="text-sm">Back to Catalog</span>
+        </button>
         <div className="flex items-center justify-between">
             <h1 className="text-2xl md:text-3xl font-bold text-white">Your Cart</h1>
             <span className="badge-gold">{cart?.items?.length || 0} items</span>
@@ -264,8 +268,12 @@ const CartView = ({ cart, onRemove }) => (
 );
 
 // History View
-const HistoryView = ({ orders }) => (
+const HistoryView = ({ orders, goBack }) => (
     <div className="max-w-2xl mx-auto space-y-6">
+        <button onClick={goBack} className="flex items-center gap-2 text-cred-muted hover:text-white transition-colors mb-4">
+            <ArrowLeft size={18} />
+            <span className="text-sm">Back to Catalog</span>
+        </button>
         <h1 className="text-2xl md:text-3xl font-bold text-white">Order History</h1>
         {orders.length === 0 ? (
             <div className="glass-card p-8 md:p-12 text-center">
@@ -292,12 +300,16 @@ const HistoryView = ({ orders }) => (
 );
 
 // Checkout View
-const CheckoutView = ({ cart, checkoutDetails, setCheckoutDetails, handleCheckout }) => (
+const CheckoutView = ({ cart, checkoutDetails, setCheckoutDetails, handleCheckout, goBack }) => (
     <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="max-w-md mx-auto space-y-6"
     >
+        <button onClick={goBack} className="flex items-center gap-2 text-cred-muted hover:text-white transition-colors">
+            <ArrowLeft size={18} />
+            <span className="text-sm">Back to Cart</span>
+        </button>
         <div className="text-center">
             <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Checkout</h1>
             <p className="text-cred-muted text-sm">Complete your purchase</p>
@@ -453,12 +465,12 @@ const Dashboard = ({ user, handleLogout, cart, orders, fetchCart, fetchOrders, a
                             )}
                             {activeTab === 'cart' && (
                                 <motion.div key="cart" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                    <CartView cart={cart} onRemove={handleRemove} />
+                                    <CartView cart={cart} onRemove={handleRemove} goBack={() => setActiveTab('scan')} />
                                 </motion.div>
                             )}
                             {activeTab === 'history' && (
                                 <motion.div key="history" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                                    <HistoryView orders={orders} />
+                                    <HistoryView orders={orders} goBack={() => setActiveTab('scan')} />
                                 </motion.div>
                             )}
                             {activeTab === 'pay' && (
@@ -467,6 +479,7 @@ const Dashboard = ({ user, handleLogout, cart, orders, fetchCart, fetchOrders, a
                                     checkoutDetails={checkoutDetails}
                                     setCheckoutDetails={setCheckoutDetails}
                                     handleCheckout={handleCheckout}
+                                    goBack={() => setActiveTab('cart')}
                                 />
                             )}
                             {activeTab === 'admin' && user.role === 'ADMIN' && (
