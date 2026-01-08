@@ -1,4 +1,4 @@
-# 🚀 Scan & Bill System
+# 🚀 Scan & Bill 
 
 A modern, high-performance web application for retail store management, featuring a seamless "Scan & Checkout" experience for customers and a powerful ecosystem for administrators.
 
