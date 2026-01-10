@@ -39,7 +39,7 @@ A modern, high-performance web application for retail store management, featurin
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-repo/scan-bill.git
+   git clone https://github.com/premsinghsengar10/Scan-And-Bill.git
    ```
 
 2. **Backend Setup**
